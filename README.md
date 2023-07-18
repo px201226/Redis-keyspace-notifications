@@ -44,36 +44,6 @@ Redis 명령에 따른 이벤트 종류를 보고 싶다면 [공식문서](https
 ## 성능 측정
 notify-keyspace-events 옵션을 모두 활성화 했을떄, 비활성화 했을 때 각가 redis-benchmark 를 통해 퍼모먼스를 테스트해보자.
 
-### notify-keyspace-events AKE 모든 이벤트 활성화
-```
-# redis-cli config set notify-keyspace-events AKE
-# redis-benchmark -q 
-```
-
-```
-PING_INLINE: 3299.57 requests per second, p50=14.319 msec
-PING_MBULK: 3115.85 requests per second, p50=15.039 msec
-SET: 3974.25 requests per second, p50=10.399 msec
-GET: 3828.19 requests per second, p50=10.959 msec
-INCR: 3869.07 requests per second, p50=10.791 msec
-LPUSH: 3835.24 requests per second, p50=11.095 msec
-RPUSH: 4118.96 requests per second, p50=10.247 msec
-LPOP: 3102.89 requests per second, p50=14.991 msec
-RPOP: 3178.03 requests per second, p50=14.895 msec
-SADD: 3834.94 requests per second, p50=10.983 msec
-HSET: 3825.41 requests per second, p50=11.111 msec
-SPOP: 3389.03 requests per second, p50=13.735 msec
-ZADD: 3750.94 requests per second, p50=11.207 msec
-ZPOPMIN: 3117.69 requests per second, p50=14.855 msec
-LPUSH (needed to benchmark LRANGE): 3835.68 requests per second, p50=11.103 msec
-LRANGE_100 (first 100 elements): 4953.68 requests per second, p50=8.247 msec
-LRANGE_300 (first 300 elements): 3687.04 requests per second, p50=12.079 msec
-LRANGE_500 (first 500 elements): 2410.28 requests per second, p50=20.191 msec
-LRANGE_600 (first 600 elements): 2059.44 requests per second, p50=23.647 msec
-MSET (10 keys): 4043.02 requests per second, p50=10.143 msec
-```
-
-
 ### notify-keyspace-events "" 모든 이벤트 비활성화
 ```
 # redis-cli config set notify-keyspace-events ""
@@ -102,6 +72,34 @@ LRANGE_600 (first 600 elements): 2067.31 requests per second, p50=23.663 msec
 MSET (10 keys): 4288.53 requests per second, p50=9.711 msec
 ```
 
+### notify-keyspace-events AKE 모든 이벤트 활성화
+```
+# redis-cli config set notify-keyspace-events AKE
+# redis-benchmark -q 
+```
+
+```
+PING_INLINE: 3299.57 requests per second, p50=14.319 msec
+PING_MBULK: 3115.85 requests per second, p50=15.039 msec
+SET: 3974.25 requests per second, p50=10.399 msec
+GET: 3828.19 requests per second, p50=10.959 msec
+INCR: 3869.07 requests per second, p50=10.791 msec
+LPUSH: 3835.24 requests per second, p50=11.095 msec
+RPUSH: 4118.96 requests per second, p50=10.247 msec
+LPOP: 3102.89 requests per second, p50=14.991 msec
+RPOP: 3178.03 requests per second, p50=14.895 msec
+SADD: 3834.94 requests per second, p50=10.983 msec
+HSET: 3825.41 requests per second, p50=11.111 msec
+SPOP: 3389.03 requests per second, p50=13.735 msec
+ZADD: 3750.94 requests per second, p50=11.207 msec
+ZPOPMIN: 3117.69 requests per second, p50=14.855 msec
+LPUSH (needed to benchmark LRANGE): 3835.68 requests per second, p50=11.103 msec
+LRANGE_100 (first 100 elements): 4953.68 requests per second, p50=8.247 msec
+LRANGE_300 (first 300 elements): 3687.04 requests per second, p50=12.079 msec
+LRANGE_500 (first 500 elements): 2410.28 requests per second, p50=20.191 msec
+LRANGE_600 (first 600 elements): 2059.44 requests per second, p50=23.647 msec
+MSET (10 keys): 4043.02 requests per second, p50=10.143 msec
+```
 p50 응답시간은 큰 차이가 없지만 초당 request 처리가 100~500 정도 줄어든 것을 볼 수 있다.   
 따라서, 이벤트 수신이 필요없다면 redis의 해당 설정은 비활성화하는 것이 리소스를 효율적으로 쓰는데 도움이 될 것 이다.
 옵션을 활성화하더라도 꼭 필요한 이벤트 유형 옵션만 설정하는 것이 좋다.
