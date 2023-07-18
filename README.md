@@ -156,4 +156,4 @@ public class RedisMessageListener implements MessageListener {
 
 RedisMessageListenerContainer 빈 등록 시, 주의할 점은 setTaskExecutor() 로 스레드풀을 사용하는 Executor를 등록해야 한다.   
 setTaskExecutor()로 Executor를 등록하지 않으면 RedisMessageListenerContainer는 기본값으로 SimpleAsyncTaskExecutor가 사용되는데,
-SimpleAsyncTaskExecutor 는 사용될 때 마다, 새로운 스레드를 만들어서 run() 하기 때문에 많은 리소스가 소모된다.
+SimpleAsyncTaskExecutor 는 사용될 때 마다, 새로운 스레드를 만들어서 run() 하기 때문에 Redis에서 이벤트가 수신될 때 마다 새로운 스레드가 만들어지므로 주의하자.
